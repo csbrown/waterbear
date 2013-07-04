@@ -182,12 +182,13 @@
 
 
     // Remove namespace for matches
+
     if (document.body.matches){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).matches(selector); };
-    }else if(document.body.mozMatchesSelector){
-        wb.matches = function matches(elem, selector){ return wb.elem(elem).mozMatchesSelector(selector); };
     }else if (document.body.webkitMatchesSelector){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).webkitMatchesSelector(selector); };
+    }else if(document.body.mozMatchesSelector){
+        wb.matches = function matches(elem, selector){ return wb.elem(elem).mozMatchesSelector(selector); };
     }else if (document.body.msMatchesSelector){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).msMatchesSelector(selector); };
     }else if(document.body.oMatchesSelector){

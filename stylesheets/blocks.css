@@ -15,7 +15,7 @@
   display: none;
 }
 
-/* This seems to hold the text entry/block holding fields inside of other blocks */
+/* This seems to hold the text entry/block holding fields, basically just to provide a border around the text area */
 .holder {
   display: inline-block;
   position: relative;
@@ -32,7 +32,7 @@
 }
 
 
-/* This seems to hold the entire header for a block */
+/* This seems to hold a .holder and its accompanying descriptive text (but not the entire label in the header, just one at a time) */
 .socket{
   position: relative;
   display: inline-block;
@@ -209,7 +209,7 @@
     content: none;
 }
 
-/* This seems to hold the stuff inside a control block */
+/* This seems to hold the stuff inside a control block.  Also holds all of the blocks inside the workspace */
 .contained {
   display: block;
   background-color: white;
