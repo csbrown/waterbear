@@ -292,16 +292,24 @@ svg text{
   display: none;
 }
 
-
+/* This seems to hold the text entry/block holding fields, basically just to provide a border around the text area */
 .holder {
   display: inline-block;
   position: relative;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: white;
+
   padding: 0;
   margin: 0;
   border-width: 2px 0;
   border-style: solid;
 }
 
+
+/* This seems to hold a .holder and its accompanying descriptive text (but not the entire label in the header, just one at a time) */
 .socket{
   position: relative;
   display: inline-block;
@@ -314,6 +322,7 @@ svg text{
   margin:0px 5px;
 }
 
+/* This seems to hold the area where local variables pop up inside control blocks */
 .locals{
     display: block;
     background-color: white;
@@ -378,6 +387,7 @@ svg text{
   padding-top: 10px;
 }
 
+/* This seems to hold the text in a block (but not the text entry) */
 .label {
   display: block;
   cursor: pointer;
@@ -387,7 +397,7 @@ svg text{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   white-space: nowrap;
-  margin: 0;
+  margin: 0px;
   padding-top: 4px;
   padding-left: 5px;
   padding-bottom: 7px;
@@ -476,6 +486,7 @@ svg text{
     content: none;
 }
 
+/* This seems to hold the stuff inside a control block.  Also holds all of the blocks inside the workspace */
 .contained {
   display: block;
   background-color: white;
@@ -513,11 +524,17 @@ svg text{
   display: none;
 }
 
-
+/* This is the text in a text entry field */
 .block input {
-  margin-left: 5px;
+  margin-left: 0px;
   width: 3em;
-  margin-right: 5px;
+  margin-right: 0px;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: white;
+
   border: 0;
   padding: 0;
   height: 16px;

@@ -1823,6 +1823,9 @@ hljs.LANGUAGES.javascript = {
 /*end highlight-javascript.js*/
 
 /*begin queryparams.js*/
+// Sets up wb namespace (wb === waterbear)
+// Extracts parameters from URL, used to switch embed modes, load from gist, etc.
+
     	var wb = {};
 
 		// Source: http://stackoverflow.com/a/13984429
@@ -2055,12 +2058,13 @@ hljs.LANGUAGES.javascript = {
 
 
     // Remove namespace for matches
+
     if (document.body.matches){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).matches(selector); };
-    }else if(document.body.mozMatchesSelector){
-        wb.matches = function matches(elem, selector){ return wb.elem(elem).mozMatchesSelector(selector); };
     }else if (document.body.webkitMatchesSelector){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).webkitMatchesSelector(selector); };
+    }else if(document.body.mozMatchesSelector){
+        wb.matches = function matches(elem, selector){ return wb.elem(elem).mozMatchesSelector(selector); };
     }else if (document.body.msMatchesSelector){
         wb.matches = function matches(elem, selector){ return wb.elem(elem).msMatchesSelector(selector); };
     }else if(document.body.oMatchesSelector){
@@ -2092,9 +2096,11 @@ hljs.LANGUAGES.javascript = {
 /*end util.js*/
 
 /*begin event.js*/
-// Add support for event delegation on top of normal DOM events
-// Minimal support for non-DOM events
+// Bare-bones Event library
+// Adds support for event delegation on top of normal DOM events (like jQuery "live" events)
+// Minimal support for non-DOM (custom) events
 // Normalized between mouse and touch events
+// Waterbear specific: events have wb-target which is always a block element
 
 (function(global){
     "use strict";
@@ -2226,6 +2232,14 @@ hljs.LANGUAGES.javascript = {
 /*begin drag.js*/
 (function(global){
 
+    // After trying to find a decent drag-and-drop library which could handle
+    // snapping tabs to slots *and* dropping expressions in sockets *and*
+    // work on both touch devices and with mouse/trackpad *and* could prevent dragging
+    // expressions to sockets of the wrong type, ended up writing a custom one for
+    // Waterbear which does what we need. The last piece makes it waterbear-specific
+    // but could potentially be factored out if another library supported all of the
+    // rest (and didn't introduce new dependencies such as jQuery)
+
     // FIXME: Remove references to waterbear
     // FIXME: Include mousetouch in garden
 
@@ -2310,7 +2324,7 @@ hljs.LANGUAGES.javascript = {
         // Called on mousedown or touchstart, we haven't started dragging yet
         // DONE: Don't start drag on a text input or select using :input jquery selector
         var eT = event.wbTarget;
-        if (wb.matches(eT, 'input, select, option, .disclosure')  && !wb.matches(eT, '#block_menu *')) {
+        if (wb.matches(eT, 'input, select, option, .disclosure,.scripts_workspace')  && !wb.matches(eT, '#block_menu *')) {
             console.log('not a drag handle');
             return undefined;
         }
@@ -2660,6 +2674,10 @@ function uuid(){
 // Nearly all the block is defined in the HTML and DOM
 // This file helps to initialize the block DOM, and provide
 // support routines
+//
+// The idea here is that rather than try to maintain a separate "model" to capture
+// the block state, which mirros the DOM and has to be kept in sync with it,
+// just keep that state in the DOM itself using attributes (and data- attributes)
 //
 // Block(obj) -> Block element
 // scriptForId(scriptid) -> script template
@@ -7425,6 +7443,10 @@ wb.menu({
 /*end matrix.json*/
 
 /*begin launch.js*/
+// Minimal script to run on load
+// Loads stored state from localStorage
+// Detects mode from URL for different embed views
+
 switch(wb.view){
     case 'editor':
     case 'blocks':
