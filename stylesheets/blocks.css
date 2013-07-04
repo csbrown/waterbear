@@ -15,16 +15,24 @@
   display: none;
 }
 
-
+/* This seems to hold the text entry/block holding fields inside of other blocks */
 .holder {
   display: inline-block;
   position: relative;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: white;
+
   padding: 0;
   margin: 0;
   border-width: 2px 0;
   border-style: solid;
 }
 
+
+/* This seems to hold the entire header for a block */
 .socket{
   position: relative;
   display: inline-block;
@@ -37,6 +45,7 @@
   margin:0px 5px;
 }
 
+/* This seems to hold the area where local variables pop up inside control blocks */
 .locals{
     display: block;
     background-color: white;
@@ -101,6 +110,7 @@
   padding-top: 10px;
 }
 
+/* This seems to hold the text in a block (but not the text entry) */
 .label {
   display: block;
   cursor: pointer;
@@ -110,7 +120,7 @@
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   white-space: nowrap;
-  margin: 0;
+  margin: 0px;
   padding-top: 4px;
   padding-left: 5px;
   padding-bottom: 7px;
@@ -199,6 +209,7 @@
     content: none;
 }
 
+/* This seems to hold the stuff inside a control block */
 .contained {
   display: block;
   background-color: white;
@@ -236,11 +247,17 @@
   display: none;
 }
 
-
+/* This is the text in a text entry field */
 .block input {
-  margin-left: 5px;
+  margin-left: 0px;
   width: 3em;
-  margin-right: 5px;
+  margin-right: 0px;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: white;
+
   border: 0;
   padding: 0;
   height: 16px;
