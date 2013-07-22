@@ -2419,6 +2419,30 @@ hljs.LANGUAGES.javascript = {
         var dY = nextPosition.top - currentPosition.top;
         var currPos = wb.rect(dragTarget);
         wb.reposition(dragTarget, {left: currPos.left + dX, top: currPos.top + dY});
+        // Scoll workspace as needed
+        if (workspace){
+            var container = workspace.parentElement;
+            var offset = wb.rect(container);
+            // console.log('scrollTop: %s, scrollHeight: %s', container.scrollTop, container.scrollHeight);
+            // console.log('top: %s, bottom: %s', currPos.top, currPos.bottom);
+            // console.log('offset top: %s, offset bottom: %s', offset.top, offset.bottom);
+            if (currPos.top < offset.top){
+                container.scrollTop -= Math.min(container.scrollTop, offset.top - currPos.top);
+            }else if (currPos.bottom > offset.bottom){
+                var maxVerticalScroll = container.scrollHeight - offset.height - container.scrollTop;
+                container.scrollTop += Math.min(maxVerticalScroll, currPos.bottom - offset.bottom);
+            }
+            // console.log('scrollLeft: %s, scrollWidth: %s', container.scrollLeft, container.scrollWidth);
+            // console.log('left: %s, right: %s', currPos.left, currPos.right);
+            // console.log('offset left: %s, offset right: %s', offset.left, offset.width);
+            if (currPos.left < offset.left){
+                container.scrollLeft -= Math.min(container.scrollLeft, offset.left - currPos.left);
+            }else if(currPos.right > offset.right){
+                var maxHorizontalScroll = container.scrollWidth - offset.width - container.scrollLeft;
+                console.log('maxHorizontalScroll: %s', maxHorizontalScroll);
+                container.scrollLeft += Math.min(maxHorizontalScroll, currPos.right - offset.right);
+            }
+        }
         currentPosition = nextPosition;
         return false;
     }
@@ -2714,7 +2738,7 @@ function uuid(){
     var registerBlock = function(blockdesc){
         if (blockdesc.seqNum){
             registerSeqNum(blockdesc.seqNum);
-        }else{
+        }else if (!blockdesc.isTemplateBlock){
             blockdesc.seqNum = newSeqNum();
         }
         if (! blockdesc.id){
@@ -2747,6 +2771,9 @@ function uuid(){
         // FIXME:
         // Handle customized names (sockets)
         registerBlock(obj);
+        // if (!obj.isTemplateBlock){
+        //     console.log('block seq num: %s', obj.seqNum);
+        // }
         var block = elem(
             'div',
             {
@@ -2766,13 +2793,15 @@ function uuid(){
                 'data-scope-id': obj.scopeId || 0,
                 'data-script-id': obj.scriptId || obj.id,
                 'data-local-source': obj.localSource || null, // help trace locals back to their origin
-                'data-seq-num': obj.seqNum,
                 'data-sockets': JSON.stringify(obj.sockets),
                 'data-locals': JSON.stringify(obj.locals),
                 'title': obj.help || getHelp(obj.scriptId || obj.id)
             },
             elem('div', {'class': 'label'}, createSockets(obj))
         );
+        if (obj.seqNum){
+            block.dataset.seqNum = obj.seqNum;
+        }
         if (obj.type){
             block.dataset.type = obj.type; // capture type of expression blocks
         }
@@ -2942,7 +2971,10 @@ function uuid(){
         if (desc.options){
             socket.dataset.options = desc.options;
         }
-        socket.firstElementChild.innerHTML = socket.firstElementChild.innerHTML.replace(/##/, ' <span class="seq-num">' + blockdesc.seqNum + '</span>');
+        // if (!blockdesc.isTemplateBlock){
+        //     console.log('socket seq num: %s', blockdesc.seqNum);
+        // }
+        socket.firstElementChild.innerHTML = socket.firstElementChild.innerHTML.replace(/##/, ' <span class="seq-num">' + (blockdesc.seqNum || '##') + '</span>');
         if (desc.type){
             socket.dataset.type = desc.type;
             var holder = elem('div', {'class': 'holder'}, [Default(desc)]);
@@ -3011,10 +3043,12 @@ function uuid(){
             group: block.dataset.group,
             id: block.id,
             help: block.title,
-            seqNum: block.dataset.seqNum,
             scopeId: block.dataset.scopeId,
             scriptId: block.dataset.scriptId,
             sockets: sockets.map(socketDesc)
+        }
+        if (block.dataset.seqNum){
+            desc.seqNum  = block.dataset.seqNum;
         }
         if (block.dataset.script){
             desc.script = block.dataset.script;
@@ -3684,11 +3718,13 @@ Event.on('.workspace', 'click', '.disclosure', function(evt){
 
 Event.on('.workspace', 'dblclick', '.locals .name', wb.changeName);
 Event.on('.workspace', 'keypress', 'input', wb.resize);
+Event.on(document.body, 'wb-loaded', null, function(evt){console.log('loaded');});
+Event.on(document.body, 'wb-script-loaded', null, function(evt){console.log('script loaded');});
 })(wb);
 
 /*end workspace.js*/
 
-/*begin javascript.js*/
+/*begin languages/javascript/javascript.js*/
 /*
  *    JAVASCRIPT PLUGIN
  *
@@ -3774,13 +3810,13 @@ Event.on('.socket input', 'click', null, function(event){
 });
 
 
-/*end javascript.js*/
+/*end languages/javascript/javascript.js*/
 
-/*begin control.js*/
+/*begin languages/javascript/control.js*/
 
-/*end control.js*/
+/*end languages/javascript/control.js*/
 
-/*begin sprite.js*/
+/*begin languages/javascript/sprite.js*/
 /*
  *    Sprite Plugin
  *
@@ -3793,17 +3829,17 @@ wb.choiceLists.types.push('sprite');
 wb.choiceLists.rettypes.push('sprite');
 
 
-/*end sprite.js*/
+/*end languages/javascript/sprite.js*/
 
-/*begin array.js*/
+/*begin languages/javascript/array.js*/
 
-/*end array.js*/
+/*end languages/javascript/array.js*/
 
-/*begin boolean.js*/
+/*begin languages/javascript/boolean.js*/
 
-/*end boolean.js*/
+/*end languages/javascript/boolean.js*/
 
-/*begin canvas.js*/
+/*begin languages/javascript/canvas.js*/
 /*
  *    Canvas Plugin
  *
@@ -3827,61 +3863,61 @@ wb.choiceLists.rettypes = wb.choiceLists.rettypes.concat(['color', 'image', 'sha
 
 
 
-/*end canvas.js*/
+/*end languages/javascript/canvas.js*/
 
-/*begin color.js*/
+/*begin languages/javascript/color.js*/
 
-/*end color.js*/
+/*end languages/javascript/color.js*/
 
-/*begin image.js*/
+/*begin languages/javascript/image.js*/
 
-/*end image.js*/
+/*end languages/javascript/image.js*/
 
-/*begin math.js*/
+/*begin languages/javascript/math.js*/
 
-/*end math.js*/
+/*end languages/javascript/math.js*/
 
-/*begin object.js*/
+/*begin languages/javascript/object.js*/
 
-/*end object.js*/
+/*end languages/javascript/object.js*/
 
-/*begin string.js*/
+/*begin languages/javascript/string.js*/
 
-/*end string.js*/
+/*end languages/javascript/string.js*/
 
-/*begin path.js*/
+/*begin languages/javascript/path.js*/
 
-/*end path.js*/
+/*end languages/javascript/path.js*/
 
-/*begin point.js*/
+/*begin languages/javascript/point.js*/
 
-/*end point.js*/
+/*end languages/javascript/point.js*/
 
-/*begin rect.js*/
+/*begin languages/javascript/rect.js*/
 
-/*end rect.js*/
+/*end languages/javascript/rect.js*/
 
-/*begin sensing.js*/
+/*begin languages/javascript/sensing.js*/
 
-/*end sensing.js*/
+/*end languages/javascript/sensing.js*/
 
-/*begin shape.js*/
+/*begin languages/javascript/shape.js*/
 
-/*end shape.js*/
+/*end languages/javascript/shape.js*/
 
-/*begin size.js*/
+/*begin languages/javascript/size.js*/
 
-/*end size.js*/
+/*end languages/javascript/size.js*/
 
-/*begin text.js*/
+/*begin languages/javascript/text.js*/
 
-/*end text.js*/
+/*end languages/javascript/text.js*/
 
-/*begin matrix.js*/
+/*begin languages/javascript/matrix.js*/
 
-/*end matrix.js*/
+/*end languages/javascript/matrix.js*/
 
-/*begin control.json*/
+/*begin languages/javascript/control.json*/
 wb.menu({
     "name": "Controls",
     "blocks": [
@@ -4158,9 +4194,9 @@ wb.menu({
     ]
 }
 );
-/*end control.json*/
+/*end languages/javascript/control.json*/
 
-/*begin sprite.json*/
+/*begin languages/javascript/sprite.json*/
 wb.menu({
     "name": "Sprites",
     "blocks": [
@@ -4413,11 +4449,10 @@ wb.menu({
             ]
         }
     ]
-}
-);
-/*end sprite.json*/
+});
+/*end languages/javascript/sprite.json*/
 
-/*begin array.json*/
+/*begin languages/javascript/array.json*/
 wb.menu({
     "name": "Arrays",
     "blocks": [
@@ -4674,9 +4709,9 @@ wb.menu({
     ]
 }
 );
-/*end array.json*/
+/*end languages/javascript/array.json*/
 
-/*begin boolean.json*/
+/*begin languages/javascript/boolean.json*/
 wb.menu({
     "name": "Boolean",
     "blocks": [
@@ -4754,9 +4789,9 @@ wb.menu({
     ]
 }
 );
-/*end boolean.json*/
+/*end languages/javascript/boolean.json*/
 
-/*begin canvas.json*/
+/*begin languages/javascript/canvas.json*/
 wb.menu({
     "name": "Canvas",
     "blocks": [
@@ -4960,9 +4995,9 @@ wb.menu({
     ]
 }
 );
-/*end canvas.json*/
+/*end languages/javascript/canvas.json*/
 
-/*begin color.json*/
+/*begin languages/javascript/color.json*/
 wb.menu({
     "name": "Color",
     "blocks": [
@@ -5273,9 +5308,9 @@ wb.menu({
     ]
 }
 );
-/*end color.json*/
+/*end languages/javascript/color.json*/
 
-/*begin image.json*/
+/*begin languages/javascript/image.json*/
 wb.menu({
     "name": "Images",
     "blocks": [
@@ -5566,9 +5601,9 @@ wb.menu({
     ]
 }
 );
-/*end image.json*/
+/*end languages/javascript/image.json*/
 
-/*begin math.json*/
+/*begin languages/javascript/math.json*/
 wb.menu({
     "name": "Math",
     "blocks": [
@@ -5938,9 +5973,9 @@ wb.menu({
     ]
 }
 );
-/*end math.json*/
+/*end languages/javascript/math.json*/
 
-/*begin object.json*/
+/*begin languages/javascript/object.json*/
 wb.menu({
     "name": "Objects",
     "blocks": [
@@ -6052,9 +6087,9 @@ wb.menu({
     ]
 }
 );
-/*end object.json*/
+/*end languages/javascript/object.json*/
 
-/*begin string.json*/
+/*begin languages/javascript/string.json*/
 wb.menu({
     "name": "Strings",
     "blocks": [
@@ -6261,9 +6296,9 @@ wb.menu({
     ]
 }
 );
-/*end string.json*/
+/*end languages/javascript/string.json*/
 
-/*begin path.json*/
+/*begin languages/javascript/path.json*/
 wb.menu({
     "name": "Paths",
     "blocks": [
@@ -6463,9 +6498,9 @@ wb.menu({
     ]
 }
 );
-/*end path.json*/
+/*end languages/javascript/path.json*/
 
-/*begin point.json*/
+/*begin languages/javascript/point.json*/
 wb.menu({
     "name": "Points",
     "blocks": [
@@ -6568,9 +6603,9 @@ wb.menu({
     ]
 }
 );
-/*end point.json*/
+/*end languages/javascript/point.json*/
 
-/*begin rect.json*/
+/*begin languages/javascript/rect.json*/
 wb.menu({
     "name": "Rects",
     "blocks": [
@@ -6748,9 +6783,9 @@ wb.menu({
     ]
 }
 );
-/*end rect.json*/
+/*end languages/javascript/rect.json*/
 
-/*begin sensing.json*/
+/*begin languages/javascript/sensing.json*/
 wb.menu({
     "name": "Sensing",
     "blocks": [
@@ -6934,9 +6969,9 @@ wb.menu({
     ]
 }
 );
-/*end sensing.json*/
+/*end languages/javascript/sensing.json*/
 
-/*begin shape.json*/
+/*begin languages/javascript/shape.json*/
 wb.menu({
     "name": "Shapes",
     "blocks": [
@@ -7143,9 +7178,9 @@ wb.menu({
     ]
 }
 );
-/*end shape.json*/
+/*end languages/javascript/shape.json*/
 
-/*begin size.json*/
+/*begin languages/javascript/size.json*/
 wb.menu({
     "name": "Sizes",
     "blocks": [
@@ -7231,9 +7266,9 @@ wb.menu({
     ]
 }
 );
-/*end size.json*/
+/*end languages/javascript/size.json*/
 
-/*begin text.json*/
+/*begin languages/javascript/text.json*/
 wb.menu({
     "name": "Text",
     "blocks": [
@@ -7410,9 +7445,9 @@ wb.menu({
     ]
 }
 );
-/*end text.json*/
+/*end languages/javascript/text.json*/
 
-/*begin matrix.json*/
+/*begin languages/javascript/matrix.json*/
 wb.menu({
     "name": "Matrix",
     "blocks": [
@@ -7445,7 +7480,7 @@ wb.menu({
     ]
 }
 );
-/*end matrix.json*/
+/*end languages/javascript/matrix.json*/
 
 /*begin launch.js*/
 // Minimal script to run on load
