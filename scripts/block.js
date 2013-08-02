@@ -288,8 +288,9 @@
         socket.firstElementChild.innerHTML = socket.firstElementChild.innerHTML.replace(/##/, ' <span class="seq-num">' + (blockdesc.seqNum || '##') + '</span>');
         if (desc.type){
             socket.dataset.type = desc.type;
-            var holder = elem('div', {'class': 'holder'}, [Default(desc)]);
-            socket.appendChild(holder)
+            var defaultelement = Default(desc);
+            var holder = elem('div', {'class': 'holder'}, [defaultelement]);
+            socket.appendChild(holder);
         }
         if (desc.block){
             socket.dataset.block = desc.block;
@@ -453,6 +454,8 @@
                     choice.appendChild(option);
                 });
                 return choice;
+            case 'localimage':
+                return elem('input', {type: 'file', id: uuid(), name: 'localimageinput'});
             default:
                 value = obj.uValue || obj.value || '';
         }
@@ -467,6 +470,9 @@
         }else{
             var value = wb.findChild(holder, 'input, select').value;
             var type = holder.parentElement.dataset.type;
+            if (type === 'localimage'){
+                value = '"' + wb.findChild(holder, 'input').id + '"';
+            }
             if (type === 'string' || type === 'choice'){
                 if (value[0] === '"'){value = value.slice(1);}
                 if (value[value.length-1] === '"'){value = value.slice(0,-1);}

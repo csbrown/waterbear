@@ -80,6 +80,7 @@ wb.writeScript = function(elements, view){
 
 // expose these globally so the Block/Label methods can find them
 wb.choiceLists = {
+    images: [],
     boolean: ['true', 'false'],
     keys: 'abcdefghijklmnopqrstuvwxyz0123456789*+-./'
         .split('').concat(['up', 'down', 'left', 'right',

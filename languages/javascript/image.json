@@ -1,6 +1,35 @@
 {
     "name": "Images",
     "blocks": [
+
+
+        {
+            "blocktype": "step",
+            "id": "1c79800c-af02-48e1-b9cb-d043e8299f7a",
+            "script": "local.imageData## = {{1}};",
+            "locals": [
+                {
+                    "blocktype": "expression",
+                    "sockets": [
+                        {
+                            "name": "imageData##"
+                        }
+                    ],
+                    "script": "local.imageData##",
+                    "type": "imagedata"
+                }
+            ],
+            "help": "initialize a new imageData from local file",
+            "sockets": [
+                {
+                    "name": "create ImageData## with size",
+                    "type": "localimage",
+                    "value": null
+                }
+            ]
+        },
+
+
         {
             "blocktype": "step",
             "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",

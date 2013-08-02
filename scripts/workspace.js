@@ -186,6 +186,12 @@ function wireUpWorkspace(workspace){
     });
     document.querySelector('.workspace').appendChild(workspace);
     workspace.querySelector('.contained').appendChild(wb.elem('div', {'class': 'dropCursor'}));
+    
+    var fileinputs = document.getElementsByName("localimageinput");
+    for (var i = 0; i < fileinputs.length; ++i) {    
+        fileinputs[i].addEventListener('change', handleLoadImage, false);
+    }
+        
     wb.initializeDragHandlers();
 }
 
@@ -215,6 +221,8 @@ function getFiles(evt){
 }
 
 
+
+
 function handleloadscript(evt) {
     var files = evt.target.files; // FileList object
 
@@ -241,11 +249,50 @@ function handleloadscript(evt) {
 
 document.getElementById('loadfile').addEventListener('change', handleloadscript, false);
 
+function handleLoadImage(evt) {
+  var file = evt.target.files[0];
+  alert(evt.target.result);
+  if (!file.type.match('image.*')) {return;}
+  var reader = new FileReader();
+
+  // Closure to capture the file information.
+  reader.onload = (function(theFile) {
+    return function(e) {
+    // Render thumbnail.
+    var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          wb.choiceLists.images.push(theFile.name);
+          document.getElementById('list').insertBefore(span, null);
+          alert(e.target.result);
+          evt.target.id = e.target.result;
+          window.updateScriptsView();
+    };
+  })(file);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(file);
+  
+     
+
+
+
+ 
+  }    
+
+
+
   function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
+                        if ('name' in f) {
+                            alert("name: " + f.name);
+                        }
+                        else {
+                            alert("name: " + f.fileName);
+                        }
 
       // Only process image files.
       if (!f.type.match('image.*')) {
@@ -261,6 +308,8 @@ document.getElementById('loadfile').addEventListener('change', handleloadscript,
           var span = document.createElement('span');
           span.innerHTML = ['<img class="thumb" src="', e.target.result,
                             '" title="', escape(theFile.name), '"/>'].join('');
+          wb.images[theFile.name] = e.target.result;
+          wb.choiceLists.images.push(theFile.name);
           document.getElementById('list').insertBefore(span, null);
         };
       })(f);
@@ -271,7 +320,6 @@ document.getElementById('loadfile').addEventListener('change', handleloadscript,
   }
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
 
 Event.on('.workspace', 'click', '.disclosure', function(evt){
