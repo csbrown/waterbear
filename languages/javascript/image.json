@@ -16,7 +16,7 @@
                         }
                     ],
                     "script": "local.imageData##",
-                    "type": "imagedata"
+                    "type": "image"
                 }
             ],
             "help": "initialize a new imageData from local file",
@@ -27,17 +27,15 @@
                     "value": null
                 }
             ]
-        },
-
-
+        },        
         {
             "blocktype": "step",
             "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
-            "script": "var img = {{1}}, point={{2}}; local.ctx.drawImage(img,point.x,point.y);",
+            "script": "var img = Image(); img.src = {{1}}; point={{2}};  local.ctx.drawImage(img,point.x,point.y);",
             "help": "draw the HTML &lt;img&gt; into the canvas without resizing",
             "sockets": [
                 {
-                    "name": "draw image",
+                    "name": "draw dataurl",
                     "type": "image",
                     "value": null
                 },
@@ -48,6 +46,10 @@
                 }
             ]
         },
+
+
+
+
         {
             "blocktype": "step",
             "id": "da300b03-1d39-4865-ab99-beec07b53bb2",
