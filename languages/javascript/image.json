@@ -31,7 +31,7 @@
         {
             "blocktype": "step",
             "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
-            "script": "var img = Image(); img.src = {{1}}; point={{2}};  local.ctx.drawImage(img,point.x,point.y);",
+            "script": "var img = new Image(); img.src = {{1}}; point={{2}};  local.ctx.drawImage(img,point.x,point.y);",
             "help": "draw the HTML &lt;img&gt; into the canvas without resizing",
             "sockets": [
                 {
