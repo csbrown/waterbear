@@ -332,6 +332,8 @@
         }
         // User-specified settings
         var uName = wb.findChild(socket, '.name').textContent;
+        var uEle = wb.findChild(socket, '.name')
+        
         if (desc.name !== uName){
             desc.uName = uName;
         }
@@ -339,6 +341,10 @@
         if (holder){
             var input = wb.findChild(holder, 'input, select');
             desc.uValue = input.value;
+            var type = socket.dataset.type;
+            if (type === 'localimage'){
+                desc.uValue = wb.findChild(holder, 'input').id;
+            }
             var block = wb.findChild(holder, '.block');
             if (wb.matches(holder.lastElementChild, '.block')){
                 desc.uBlock = blockDesc(holder.lastElementChild);
@@ -455,7 +461,8 @@
                 });
                 return choice;
             case 'localimage':
-                return elem('input', {type: 'file', id: uuid(), name: 'localimageinput'});
+                id = obj.uValue || uuid();
+                return elem('input', {type: 'file', id: id, name: 'localimageinput'});
             default:
                 value = obj.uValue || obj.value || '';
         }
