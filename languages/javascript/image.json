@@ -3,7 +3,7 @@
     "blocks": [
 
 
-        {
+        /*{
             "blocktype": "step",
             "id": "1c79800c-af02-48e1-b9cb-d043e8299f7a",
             "script": "local.imageData## = {{1}};",
@@ -27,11 +27,11 @@
                     "value": null
                 }
             ]
-        },        
+        },*/        
         {
             "blocktype": "step",
             "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
-            "script": "var img = new Image(); img.src = {{1}}; point={{2}};  local.ctx.drawImage(img,point.x,point.y);",
+            "script": "var img = new Image(); img = {{1}}; point={{2}}; local.ctx.drawImage(img,(point.x+global.stage_width),((global.stage_height/2)-img.height-point.y));}else{local.ctx.drawImage(img,point.x,point.y);",
             "help": "draw a local image",
             "sockets": [
                 {
@@ -46,14 +46,28 @@
                 }
             ]
         },
-
-
-
-
+        {
+         "blocktype": "step",
+         "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
+         "script": "var img = new Image(); img = {{1}}; point={{2}}; local.ctx.drawImage(img,(point.x+global.stage_width/2),((global.stage_height/2)-img.height-point.y));",
+         "help": "draw a local image",
+         "sockets": [
+                     {
+                     "name": "draw image",
+                     "type": "image",
+                     "value": null
+                     },
+                     {
+                     "name": "at point",
+                     "type": "point",
+                     "value": null
+                     }
+                     ]
+        },
         {
             "blocktype": "step",
             "id": "da300b03-1d39-4865-ab99-beec07b53bb2",
-            "script": "local.ctx.drawImage({{1}},{{2}}.x,{{2}}.y,{{2}}.w,{{2}}.h);",
+            "script": "local.ctx.drawImage({{1}},({{2}}.x+global.stage_width/2),((global.stage_height/2)-{{1}}.height-{{2}}.y),{{2}}.w,{{2}}.h);",
             "help": "draw the HTML &lt;img&gt; into the canvas sized to the given dimension",
             "sockets": [
                 {
@@ -71,7 +85,7 @@
         {
             "blocktype": "step",
             "id": "5514e085-970f-48c2-b6bf-a443488c3c07",
-            "script": "local.ctx.drawImage({{2}},{{1}}.x,{{1}}.y,{{1}}.w,{{1}}.h,{{3}}.x,{{3}}.y,{{3}}.w,{{3}}.h);",
+            "script": "local.ctx.drawImage({{2}},(global.stage_width/2)+{{1}}.x,(global.stage_height/2)-{{2}}.height-{{1}}.y,{{1}}.w,{{1}}.h,(global.stage_width/2)+{{3}}.x,(global.stage_height/2)-{{2}}.height-{{3}}.y,{{3}}.w,{{3}}.h);",
             "help": "draw a rect extracted from image into a rect specified on the canvas",
             "sockets": [
                 {
@@ -91,7 +105,7 @@
                 }
             ]
         },
-        {
+        /*{
             "blocktype": "step",
             "id": "6c79800c-af02-48e1-b9cb-d043e8299f7a",
             "script": "local.imageData## = local.ctx.createImageData({{1}}.w,{{1}}.h);",
@@ -254,7 +268,7 @@
                     "name": "as array"
                 }
             ]
-        },
+        },*/
         {
             "blocktype": "step",
             "id": "7fa79655-4c85-45b3-be9e-a19aa038feae",
@@ -262,7 +276,7 @@
             "type": "image",
             "sockets": [
                 {
-                    "name": "image from url",
+                    "name": "image from local url",
                     "type": "string",
                     "value": null
                 }
@@ -281,7 +295,20 @@
             ]
         },
         {
-            "blocktype": "expression",
+           "blocktype": "expression",
+           "id": "c090ce6f-6853-aec3-b248-5a202530365b",
+           "script": "(function(){var img = new Image(); img.src={{1}};return img;})()",
+           "type": "image",
+           "sockets": [
+                         {
+                         "name": "image from url",
+                         "type": "string",
+                         "value": null
+                         }
+                      ]
+        },
+        {
+            "blocktype": "step",
             "id": "a7e59ad2-47ab-4240-8801-5d66d8f57fc9",
             "script": "{{1}}.width",
             "type": "number",
