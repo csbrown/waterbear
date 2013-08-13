@@ -14,12 +14,36 @@
         },
         {
             "blocktype": "step",
+               "script": "local.ctx.fillStyle=\"#FFFFFF\";local.ctx.fillRect(0,0,global.stage_width,global.stage_height);local.ctx.strokeStyle=\"#000000\";local.ctx.beginPath();local.ctx.moveTo(0,global.stage_height/2);local.ctx.lineTo(global.stage_width,global.stage_height/2);local.ctx.stroke();local.ctx.beginPath();local.ctx.moveTo(global.stage_width/2,0);local.ctx.lineTo(global.stage_width/2,global.stage_height);local.ctx.stroke();",
+            "help": "clear stage",
+            "id": "78224898-f9e0-d693-f738-de3b751e3039",
+            "sockets": [
+                {
+                    "name": "clear stage"
+                }
+            ]
+        },
+        {
+            "blocktype": "step",
             "script": "local.ctx.stroke();",
             "help": "stroke...",
             "id": "99d5828c-ccdd-47db-9abe-f67a8c065fe6",
             "sockets": [
                 {
                     "name": "stroke"
+                }
+            ]
+        },
+        {
+            "blocktype": "step",
+            "id": "d297afc2-3941-4977-a6af-d7f4e222b467",
+            "script": "local.ctx.lineWidth = {{1}};",
+            "help": "set line width",
+            "sockets": [
+                {
+                    "name": "line width",
+                    "type": "number",
+                    "value": "1"
                 }
             ]
         },
@@ -47,7 +71,7 @@
                 }
             ]
         },
-        {
+        /*{
             "blocktype": "step",
             "id": "0237bbab-d62a-4ff9-afb8-4a64bc98dbc3",
             "script": "local.ctx.globalCompositOperator = {{1}};",
@@ -60,7 +84,7 @@
                     "value": "choice"
                 }
             ]
-        },
+        },*/
         {
             "blocktype": "step",
             "id": "96085392-9a2d-4857-85f1-af2af72cf800",
@@ -114,18 +138,27 @@
             ]
         },
         {
-            "blocktype": "step",
-            "id": "d297afc2-3941-4977-a6af-d7f4e222b467",
-            "script": "local.ctx.lineWidth = {{1}};",
-            "help": "set line width",
-            "sockets": [
-                {
-                    "name": "line width",
-                    "type": "number",
-                    "value": "1"
-                }
-            ]
+          "blocktype": "context",
+          "id": "30c180d6-55c7-82e0-3c8f-d507be3c766d",
+          "script": "function _reflect_x(){var reflect_x = true; var reflect_y; [[1]];local.ctx.transform(1,0,0,-1,0,global.stage_height);[[1]];var reflect_x = false;} _reflect_x();",
+          "help": "reflect about the x-axis",
+          "sockets": [
+            {
+              "name": "reflect about the x-axis"
+            }
+          ]
         },
+        {
+          "blocktype": "context",
+          "id": "c8283778-4b07-85f0-debd-e52c163bcf78",
+          "script": "function _reflect_y(){var reflect_y = true; var reflect_x; [[1]];local.ctx.transform(-1,0,0,1,global.stage_width,0);[[1]];var reflect_y = false;} _reflect_y();",
+          "help": "reflect about the y-axis",
+          "sockets": [
+            {
+              "name": "reflect about the y-axis"
+            }
+          ]
+        }/*,
         {
             "blocktype": "step",
             "id": "b538aadd-e90d-4d0d-bc12-95b7df9c2a61",
@@ -197,6 +230,6 @@
                     "value": "0"
                 }
             ]
-        }
+        }*/
     ]
 }
