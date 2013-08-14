@@ -3,7 +3,7 @@
     "blocks": [
 
 
-        /*{
+        {
             "blocktype": "step",
             "id": "1c79800c-af02-48e1-b9cb-d043e8299f7a",
             "script": "local.imageData## = {{1}};",
@@ -27,11 +27,11 @@
                     "value": null
                 }
             ]
-        },*/        
+        },        
         {
             "blocktype": "step",
             "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
-            "script": "var img = new Image(); img = {{1}}; point={{2}}; local.ctx.drawImage(img,(point.x+global.stage_width),((global.stage_height/2)-img.height-point.y));}else{local.ctx.drawImage(img,point.x,point.y);",
+            "script": "var img = new Image(); img.src = {{1}}; point={{2}};  local.ctx.drawImage(img,point.x,point.y);",
             "help": "draw a local image",
             "sockets": [
                 {
@@ -46,9 +46,10 @@
                 }
             ]
         },
+
         {
          "blocktype": "step",
-         "id": "1a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
+         "id": "9a6150d8-b3d5-46e3-83e5-a4fe3b00f7db",
          "script": "var img = new Image(); img = {{1}}; point={{2}}; local.ctx.drawImage(img,(point.x+global.stage_width/2),((global.stage_height/2)-img.height-point.y));",
          "help": "draw a local image",
          "sockets": [
