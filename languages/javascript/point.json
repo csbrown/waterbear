@@ -20,7 +20,7 @@
                 }
             ]
         },
-        {
+        /*{
             "blocktype": "expression",
             "id": "efe5e679-8336-4e5a-ade0-4bd930826096",
             "type": "point",
@@ -33,7 +33,7 @@
                     "value": null
                 }
             ]
-        },
+        },*/
         {
             "blocktype": "expression",
             "id": "29803c49-5bd5-4473-bff7-b3cf66ab9711",
@@ -45,7 +45,7 @@
                     "name": "random point"
                 }
             ]
-        },
+        }/*,
         {
             "blocktype": "expression",
             "id": "36f0eb56-9370-402d-83ef-99201a62c732",
@@ -96,6 +96,6 @@
                     "name": "as array"
                 }
             ]
-        }
+        }*/
     ]
 }
