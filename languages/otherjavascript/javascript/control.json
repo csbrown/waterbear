@@ -4,7 +4,7 @@
         {
             "blocktype": "eventhandler",
             "id": "1cf8132a-4996-47db-b482-4e336200e3ca",
-            "script": "function _start(){local.ctx.strokeStyle=\"#000000\";local.ctx.beginPath();local.ctx.moveTo(0,global.stage_height/2);local.ctx.lineTo(global.stage_width,global.stage_height/2);local.ctx.stroke();local.ctx.beginPath();local.ctx.moveTo(global.stage_width/2,0);local.ctx.lineTo(global.stage_width/2,global.stage_height);local.ctx.stroke();[[1]]}_start();",
+            "script": "function _start(){[[1]]}_start();",
             "help": "this trigger will run its scripts once when the program starts",
             "sockets": [
                 {
@@ -29,7 +29,7 @@
                 }
             ]
         },
-        /*{
+        {
             "blocktype": "eventhandler",
             "id": "cfea9087-3d7c-46ad-aa41-579bba2f4709",
             "locals": [
@@ -56,7 +56,7 @@
                     "name": "times a second"
                 }
             ]
-        },*/
+        },
         {
             "blocktype": "step",
             "id": "079b2b89-41c2-4d00-8e21-bcb86574bf80",
@@ -79,34 +79,6 @@
                     "name": "variable",
                     "type": "any",
                     "value": null
-                }
-            ]
-        },
-        {
-            "blocktype": "eventhandler",
-            "id": "cfea9087-3d7c-46ad-aa41-579bba2f4709",
-            "locals": [
-                {
-                    "blocktype": "expression",
-                    "sockets": [
-                        {
-                            "name": "count##"
-                        }
-                    ],
-                    "script": "local.count##",
-                    "type": "number"
-                }
-            ],
-            "script": "local.count##=0;(function(){setInterval(function(){local.count##++;[[1]]},1000/{{1}})})();",
-            "help": "this trigger will run the attached blocks periodically",
-            "sockets": [
-                {
-                    "name": "repeat",
-                    "type": "number",
-                    "value": "30"
-                },
-                {
-                    "name": "times a second"
                 }
             ]
         },
