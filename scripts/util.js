@@ -38,6 +38,9 @@
         svgtext.textContent = input.value;
         var textbox = svgtext.getBBox();
         input.style.width = (textbox.width*0.7 + 25) + 'px';
+        if (input.type == 'file'){
+            input.style.width = 180 + 'px';
+        }
     };
 
     // wb.mag = function mag(p1, p2){

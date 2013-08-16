@@ -12,7 +12,7 @@
                     "blocktype": "expression",
                     "sockets": [
                         {
-                            "name": "imageData##"
+                            "name": "local image ##"
                         }
                     ],
                     "script": "local.imageData##",
@@ -22,7 +22,7 @@
             "help": "initialize a new imageData from local file",
             "sockets": [
                 {
-                    "name": "create local image ## with size",
+                    "name": "create local image ## from file",
                     "type": "localimage",
                     "value": null
                 }

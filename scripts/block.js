@@ -461,8 +461,11 @@
                 });
                 return choice;
             case 'localimage':
+                var reader = new FileReader();
                 id = obj.uValue || uuid();
-                return elem('input', {type: 'file', id: id, name: 'localimageinput'});
+                var input = elem('input', {type: 'file', id: id, name: 'localimageinput'});
+                wb.resize(input);
+                return input;
             default:
                 value = obj.uValue || obj.value || '';
         }

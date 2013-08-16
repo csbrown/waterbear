@@ -237,13 +237,6 @@ function handleloadscript(evt) {
             var saved = JSON.parse(evt.target.result);
             loadScriptsFromObject(saved);
         };
-        // files is a FileList of File objects. List some properties.
-        var output = [];
-        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                   f.size, ' bytes, last modified: ',
-                   f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                   '</li>');
-        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
     }
 }
 
@@ -263,21 +256,54 @@ function handleLoadImage(evt) {
           span.innerHTML = ['<img class="thumb" src="', e.target.result,
                             '" title="', escape(theFile.name), '"/>'].join('');
           wb.choiceLists.images.push(theFile.name);
-          document.getElementById('list').insertBefore(span, null);
+          //document.getElementById('list').insertBefore(span, null);
           alert(e.target.result);
+          span.className = 'image';
+          var previousimage = evt.target.parentElement.parentElement.querySelector('.image');
+          if (previousimage) {
+                previousimage.parentElement.removeChild(previousimage);
+          }
           evt.target.id = e.target.result;
+          evt.target.parentElement.parentElement.appendChild(span);
           window.updateScriptsView();
     };
   })(file);
 
       // Read in the image file as a data URL.
       reader.readAsDataURL(file);
-  
-     
+
+//Hack this up to put images into locals??
+/*
+        var block = event.wbTarget;
+        if (block.dataset.locals && block.dataset.locals.length && !block.dataset.localsAdded){
+            var parent = wb.closest(block, '.context');
+            var locals = wb.findChild(parent, '.locals');
+            var parsedLocals = [];
+            JSON.parse(block.dataset.locals).forEach(
+                function(spec){
+                    spec.isTemplateBlock = true;
+                    spec.isLocal = true;
+                    spec.group = block.dataset.group;
+                    if (!spec.seqNum){
+                        spec.seqNum = block.dataset.seqNum;
+                    }
+                    // add scopeid to local blocks
+                    spec.scopeId = parent.id;
+                    if(!spec.id){
+                        spec.id = spec.scriptId = uuid();
+                    }
+                    // add localSource so we can trace a local back to its origin
+                    spec.localSource = block.id;
+                    block.dataset.localsAdded = true;
+                    locals.appendChild(Block(spec));
+                    parsedLocals.push(spec);
+                }
+            );
+            block.dataset.locals = JSON.stringify(parsedLocals);
+        }
+*/
 
 
-
- 
   }    
 
 
@@ -318,9 +344,6 @@ function handleLoadImage(evt) {
       reader.readAsDataURL(f);
     }
   }
-
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
 Event.on('.workspace', 'click', '.disclosure', function(evt){
     var block = wb.closest(evt.wbTarget, '.block');
